@@ -94,7 +94,8 @@ const getUserPhotos = async (req, res) => {
 const getPhotoById = async (req, res) => {
   const { id } = req.params;
 
-  const photo = await Photo.findById(mongoose.Types.ObjectId(id));
+  try {
+    const photo = await Photo.findById(mongoose.Types.ObjectId(id));
 
   // Check if photo exists
   if (!photo) {
@@ -103,6 +104,10 @@ const getPhotoById = async (req, res) => {
   }
 
   res.status(200).json(photo);
+  } catch (error) {
+    res.status(404).json({ errors: ["Foto não encontrada!"] });
+    return;
+  }
 };
 
 // Update a photo
